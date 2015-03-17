@@ -1,10 +1,10 @@
-SRC = cube.cu
+SRC = square.cu
 TARGET = $(SRC:.cu=.cuda.out)
 
-All: $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(SRC)
-	nvcc $(SRC) -o $(TARGET)
+	nvcc -o $(TARGET) $(SRC)
 
 clean:
 	-rm $(TARGET)
