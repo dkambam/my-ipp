@@ -12,7 +12,7 @@ void printArray( data_t a[], int num_elements );
 
 int main(){
     const int num_elements = 64; 
-    int block_size = sizeof(d_in) * num_elements;
+    int block_size = sizeof(data_t) * num_elements;
 
     // set-up sample data to beb procesed 
     data_t h_in[num_elements];
@@ -31,7 +31,8 @@ int main(){
     cudaMemcpy( d_in, h_in, block_size, cudaMemcpyHostToDevice );
 
     // launch kernel
-    square <<< 1, num_elements >>> (d_in, d_out);
+    const int threads_per_block = num_elements;
+    square <<< 1, threads_per_block >>> (d_out, d_in);
 
     // retrieve data from device memory
     data_t h_out[num_elements];
@@ -47,7 +48,7 @@ int main(){
 
 
 // kernel definition
-__global__ void square(data_t *d_in, data_t *d_out){
+__global__ void square(data_t *d_out, data_t *d_in){
     int t_idx = threadIdx.x; // get thread id 
     d_out[t_idx] = d_in[t_idx] * d_in[t_idx];
 }
